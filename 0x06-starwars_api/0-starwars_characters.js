@@ -4,25 +4,40 @@
 
 const request = require('request');
 const movieId = process.argv[2];
-const url = `https://swapi-api.hbtn.io/api/films/${movieId}`;
+const url = 'https://swapi-api.alx-tools.com/api/films/' + movieId;
 
-request(url, (error, response, body) => {
-  if (error) {
-    console.error(error);
+async function getCharacterName (characters, index, names = []) {
+  if (index === characters.length) {
+    names.forEach((name) => console.log(name));
     return;
   }
-  const film = JSON.parse(body);
-  const characters = film.characters;
-
-// Loop through each character URL and print their names
-  characters.forEach(characterUrl => {
-    request(characterUrl, (err, res, charBody) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-      const character = JSON.parse(charBody);
-      console.log(character.name);
-    });
+  const characterPath = characters[index];
+  request(characterPath, (error, response, body) => {
+    if (error) {
+      console.log(error);
+    } else if (response.statusCode !== 200) {
+      console.error('Unexpected status code:', response.statusCode);
+    } else {
+      // console.log(JSON.parse(body).name);
+      names.push(JSON.parse(body).name);
+      getCharacterName(characters, index + 1, names);
+    }
   });
-});
+}
+if (process.argv.length !== 3) {
+  console.log('Usage: ./0-starwars_characters.js <filmId>');
+  process.exit(1);
+}
+async function getMovies () {
+  request(url, (error, response, body) => {
+    if (error) {
+      console.log(error);
+    } else if (response.statusCode !== 200) {
+      console.error('Unexpected status code:', response.statusCode);
+    } else {
+      const characters = JSON.parse(body).characters;
+      getCharacterName(characters, 0);
+    }
+  });
+}
+getMovies();
