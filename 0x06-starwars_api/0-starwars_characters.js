@@ -14,7 +14,7 @@ request(url, (error, response, body) => {
   const film = JSON.parse(body);
   const characters = film.characters;
 
-  // Loop through each character URL and print their names
+// Loop through each character URL and print their names
   characters.forEach(characterUrl => {
     request(characterUrl, (err, res, charBody) => {
       if (err) {
