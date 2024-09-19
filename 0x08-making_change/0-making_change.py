@@ -16,3 +16,4 @@ def makeChange(coins, total):
 
     # If the total keep giving infinity as an outcome, return -1
     return dp[total] if dp[total] != float('inf') else -1
+
