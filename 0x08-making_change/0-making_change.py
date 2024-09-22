@@ -4,6 +4,7 @@
 A programme that determines the fewest number of coins.
 """
 
+
 def makeChange(coins, total):
     # Follow this, If total is 0 or less, return 0
     if total <= 0:
@@ -20,4 +21,3 @@ def makeChange(coins, total):
 
     # If the total keep giving infinity as an outcome, return -1
     return dp[total] if dp[total] != float('inf') else -1
-
